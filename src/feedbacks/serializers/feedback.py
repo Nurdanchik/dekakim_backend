@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from feedbacks.models import Feedback
+from feedbacks.models.feedback import Feedback
 
 
-class FeedbackSerializer(serializers.ModelSerializer):
+class FeedbackCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
-        fields = ['id', 'name', 'email', 'message']
+        fields = ['name', 'email', 'message']

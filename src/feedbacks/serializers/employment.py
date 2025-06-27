@@ -1,16 +1,8 @@
 from rest_framework import serializers
-from applications.models import EmploymentApplication
+from feedbacks.models.employment import EmploymentApplication
 
 
-class EmploymentApplicationSerializer(serializers.ModelSerializer):
+class EmploymentApplicationCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmploymentApplication
-        fields = [
-            'id',
-            'name',
-            'surname',
-            'phone_number',
-            'email',
-            'cv',
-            'message',
-        ]
+        fields = ['name', 'surname', 'phone_number', 'email', 'cv', 'message']

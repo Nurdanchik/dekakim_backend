@@ -1,10 +1,11 @@
 from django.db import models
 from common.models.base import BaseModel
+from products.models.product import Product
 
 
-class EmploymentApplication(BaseModel):
+class BuyProduct(BaseModel):
     """
-    Employment application
+    Product purchase request
     """
 
     name = models.CharField(max_length=100, verbose_name='First name')
@@ -17,19 +18,16 @@ class EmploymentApplication(BaseModel):
         null=True
     )
     email = models.EmailField(verbose_name='Email', blank=True, null=True)
-    cv = models.FileField(
-        upload_to='media/employees/cvs/',
-        verbose_name='Resume (CV)'
-    )
-    message = models.TextField(
-        verbose_name='Message or cover letter',
-        blank=True,
-        null=True
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='product_to_buy',
+        verbose_name='Product'
     )
 
     def __str__(self):
         return f"{self.name} {self.surname}"
 
     class Meta:
-        verbose_name = 'Employment application'
-        verbose_name_plural = 'Employment applications'
+        verbose_name = 'Product purchase request'
+        verbose_name_plural = 'Product purchase requests'

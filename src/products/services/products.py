@@ -1,8 +1,16 @@
-from products.models import Category, Product
+from products.models.product import Category, Product
+from django.db.models import Prefetch
 
 
-def get_all_categories_with_products():
-    return Category.objects.prefetch_related('products').all()
+def get_all_categories_with_products(language=None):
+    if language:
+        return Category.objects.prefetch_related(
+            Prefetch(
+                'products',
+                queryset=Product.objects.filter(language=language)
+            )
+        )
+    return Category.objects.prefetch_related('products')
 
 
 def get_product_by_id(product_id: int):

@@ -4,179 +4,98 @@ from common.models.base import BaseModel
 
 class Category(BaseModel):
     """
-    Категория продукта
+    Product category
     """
 
-    name = models.CharField(max_length=100, unique=True, verbose_name='Название категории')
+    name = models.CharField(max_length=100, unique=True, verbose_name='Category name')
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
 
 
 class Product(BaseModel):
     """
-    Продукт
+    Product
     """
 
+    LANGUAGES = (
+        ('Eng', 'English'),
+        ('Tur', 'Turkish'),
+    )
+
+    language = models.CharField(
+        max_length=10,
+        choices=LANGUAGES,
+        default='Eng',
+        verbose_name='Language'
+    )
     face_img = models.ImageField(
         upload_to='media/cards/faces/',
-        verbose_name='Главное фото'
+        verbose_name='Main photo'
     )
-    slogan = models.TextField(verbose_name='Слоган')
+    slogan = models.TextField(verbose_name='Slogan')
     product_name = models.CharField(
         max_length=100,
         unique=True,
-        verbose_name='Название продукта'
+        verbose_name='Product name'
     )
-    description = models.TextField(verbose_name='Описание')
+    description = models.TextField(verbose_name='Description')
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE,
+        Category,
+        on_delete=models.CASCADE,
         related_name='products',
-        verbose_name='Категория'
+        verbose_name='Category'
     )
 
     def __str__(self):
         return self.product_name
 
     class Meta:
-        verbose_name = 'Продукт'
-        verbose_name_plural = 'Продукты'
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'
 
 
 class Use(BaseModel):
     """
-    Область применения продукта
+    Product use case
     """
 
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE,
+        Product,
+        on_delete=models.CASCADE,
         related_name='uses',
-        verbose_name='Продукт'
+        verbose_name='Product'
     )
-    text = models.TextField(verbose_name='Описание применения')
+    text = models.TextField(verbose_name='Use case description')
 
     def __str__(self):
-        return f"Применение: {self.product.product_name}"
+        return f"Use case: {self.product.product_name}"
 
     class Meta:
-        verbose_name = 'Область применения'
-        verbose_name_plural = 'Области применения'
+        verbose_name = 'Use case'
+        verbose_name_plural = 'Use cases'
 
 
 class Feature(BaseModel):
     """
-    Особенность продукта
+    Product feature
     """
 
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE,
+        Product,
+        on_delete=models.CASCADE,
         related_name='features',
-        verbose_name='Продукт'
+        verbose_name='Product'
     )
-    text = models.TextField(verbose_name='Особенность')
+    text = models.TextField(verbose_name='Feature')
 
     def __str__(self):
-        return f"Особенность: {self.product.product_name}"
+        return f"Feature: {self.product.product_name}"
 
     class Meta:
-        verbose_name = 'Особенность'
-        verbose_name_plural = 'Особенности'
-
-
-
-
-# from django.db import models
-# from common.models.base import BaseModel
-#
-#
-# class Category(BaseModel):
-#     """
-#     Название категории:
-#
-#     Аттрибуты:
-#     -name: название категории
-#     """
-#
-#     name = models.CharField(
-#         max_length=100, unique=True,
-#         verbose_name='Название категории')
-#
-#     def __str__(self):
-#         return self.name
-#
-#     class Meta:
-#         verbose_name = 'Категория'
-#         verbose_name_plural = 'Категории'
-#
-#
-#
-# class Product(BaseModel):
-#     """
-#     Продукты:
-#
-#     Аттрибуты:
-#     -product_name: название продукта
-#     """
-#
-#     face_img = models.ImageField(
-#         upload_to='media/cards/faces/',
-#         verbose_name='Главное фото'
-#     )
-#     slogan = models.TextField(
-#         verbose_name='Слоган'
-#     )
-#     product_name = models.CharField(
-#         max_length=100,
-#         unique=True,
-#         verbose_name='Название продукта')
-#     description = models.TextField(
-#         verbose_name='Описание'
-#     )
-#
-#     def __str__(self):
-#         return self.product_name
-#
-#     class Meta:
-#         verbose_name = 'Продукт'
-#         verbose_name_plural = 'Продукты'
-#
-#
-#
-# class Use(BaseModel):
-#     """
-#     Продукты:
-#
-#     Аттрибуты:
-#     -product_name: название продукта
-#     """
-#
-#     product_name = models.CharField(max_length=100, unique=True, verbose_name='Название продукта')
-#
-#     def __str__(self):
-#         return self.product_name
-#
-#     class Meta:
-#         verbose_name = 'Продукт'
-#         verbose_name_plural = 'Продукты'
-#
-#
-# class Feature(BaseModel):
-#     """
-#     Продукты:
-#
-#     Аттрибуты:
-#     -product_name: название продукта
-#     """
-#
-#     product_name = models.CharField(max_length=100, unique=True, verbose_name='Название продукта')
-#
-#     def __str__(self):
-#         return self.product_name
-#
-#     class Meta:
-#         verbose_name = 'Продукт'
-#         verbose_name_plural = 'Продукты'
+        verbose_name = 'Feature'
+        verbose_name_plural = 'Features'

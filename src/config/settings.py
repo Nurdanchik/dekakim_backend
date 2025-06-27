@@ -11,6 +11,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(',')
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,9 +67,7 @@ DATABASES = {
     }
 }
 
-LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
-USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
@@ -86,3 +85,6 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Backend for Dekakim store',
     'VERSION': '1.0.0',
 }
+
+LANGUAGE_CODE = 'en-us'
+USE_I18N = True

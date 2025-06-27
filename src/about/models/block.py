@@ -4,7 +4,7 @@ from common.models.base import BaseModel
 
 class Block(BaseModel):
     """
-    Блок на сайте
+    Block on the website
     """
     BLOCKTYPES = (
         ('About us', 'About us'),
@@ -12,6 +12,7 @@ class Block(BaseModel):
         ('Our mission', 'Our mission'),
         ('Res. & Dev.', 'Res. & Dev'),
     )
+
     LANGUAGES = (
         ('Eng', 'English'),
         ('Tur', 'Turkish'),
@@ -20,63 +21,63 @@ class Block(BaseModel):
     title = models.CharField(
         max_length=100,
         unique=True,
-        verbose_name='Название поста'
+        verbose_name='Post title'
     )
     blocktype = models.CharField(
-        max_length=10,
+        max_length=20,
         choices=BLOCKTYPES,
-        verbose_name='Тип блока'
+        verbose_name='Block type'
     )
     language = models.CharField(
         max_length=10,
         choices=LANGUAGES,
         default='Eng',
-        verbose_name='Выбор языка'
+        verbose_name='Language'
     )
 
     def __str__(self):
         return f"{self.title}"
 
     class Meta:
-        verbose_name = 'Блок на сайте'
-        verbose_name_plural = 'Блоки на сайте'
+        verbose_name = 'Block'
+        verbose_name_plural = 'Blocks'
 
 
 class BlockPhoto(BaseModel):
     """
-    Фото блока на сайте
+    Block photo
     """
-
     post = models.ForeignKey(
-        Block, on_delete=models.CASCADE,
+        Block,
+        on_delete=models.CASCADE,
         related_name='photos',
-        verbose_name='Блок'
+        verbose_name='Block'
     )
     photo = models.ImageField(
-        upload_to='media/blocks/photos/',
-        verbose_name='Фото'
+        upload_to='blocks/photos/',
+        verbose_name='Photo'
     )
 
     class Meta:
-        verbose_name = 'Фото блока'
-        verbose_name_plural = 'Фото блока'
+        verbose_name = 'Block photo'
+        verbose_name_plural = 'Block photos'
 
 
 class BlockVideo(BaseModel):
     """
-    Видео блока на сайте
+    Block video
     """
-
     post = models.ForeignKey(
-        Block, on_delete=models.CASCADE,
+        Block,
+        on_delete=models.CASCADE,
         related_name='videos',
-        verbose_name='Блок'
+        verbose_name='Block'
     )
     video = models.FileField(
-        upload_to='media/blocks/videos',
-        verbose_name='Видео'
+        upload_to='blocks/videos/',
+        verbose_name='Video'
     )
 
     class Meta:
-        verbose_name = 'Видео блока'
-        verbose_name_plural = 'Видео блока'
+        verbose_name = 'Block video'
+        verbose_name_plural = 'Block videos'
