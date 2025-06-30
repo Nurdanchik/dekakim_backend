@@ -3,3 +3,4 @@ djangorestframework
 drf-spectacular 
 python-dotenv
 django-jazzmin
+psycopg2-binary
