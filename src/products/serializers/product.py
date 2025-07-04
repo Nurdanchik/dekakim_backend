@@ -29,6 +29,8 @@ class ProductSerializer(serializers.ModelSerializer):
             'description',
             'category',
             'features',
+            'code',
+            'subcode',
             'uses',
         ]
 
@@ -42,7 +44,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'product_name']
+        fields = ['id', 'product_name', 'code', 'subcode']
 
 
 class CategoryWithProductsSerializer(serializers.ModelSerializer):

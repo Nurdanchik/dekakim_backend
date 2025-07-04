@@ -38,6 +38,14 @@ class Product(BaseModel):
         verbose_name='Main photo'
     )
     slogan = models.TextField(verbose_name='Slogan')
+    code = models.CharField(
+        max_length=20,
+        verbose_name='Product code'
+    )
+    subcode = models.CharField(
+        max_length=20,
+        verbose_name='Product subcode'
+    )
     product_name = models.CharField(
         max_length=100,
         unique=True,
