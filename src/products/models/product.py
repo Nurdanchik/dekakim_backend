@@ -34,7 +34,7 @@ class Product(BaseModel):
         verbose_name='Language'
     )
     face_img = models.ImageField(
-        upload_to='media/cards/faces/',
+        upload_to='cards/faces/',
         verbose_name='Main photo'
     )
     slogan = models.TextField(verbose_name='Slogan')
