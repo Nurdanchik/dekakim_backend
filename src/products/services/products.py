@@ -15,3 +15,7 @@ def get_all_categories_with_products(language=None):
 
 def get_product_by_id(product_id: int):
     return Product.objects.select_related('category').prefetch_related('features', 'uses').get(id=product_id)
+
+
+def get_products_by_category(category_id: int):
+    return Product.objects.filter(category_id=category_id)

@@ -7,7 +7,12 @@ class Category(BaseModel):
     Product category
     """
 
+    logo = models.ImageField(
+        upload_to='categories/logos/',
+        verbose_name='Category logo'
+    )
     name = models.CharField(max_length=100, unique=True, verbose_name='Category name')
+    description = models.TextField()
 
     def __str__(self):
         return self.name

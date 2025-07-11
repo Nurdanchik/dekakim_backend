@@ -1,12 +1,16 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from products.serializers.product import (
     CategoryWithProductsSerializer,
     ProductSerializer,
+    ProductCardsSerializer,
 )
 from products.services.products import (
     get_all_categories_with_products,
     get_product_by_id,
+    get_products_by_category,
 )
 from products.models.product import Product
 
@@ -53,3 +57,11 @@ class ProductDetailAPIView(RetrieveAPIView):
 
     def get_object(self):
         return get_product_by_id(self.kwargs['pk'])
+    
+
+
+class ProductCardsByCategoryView(APIView):
+    def get(self, request, category_id):
+        products = get_products_by_category(category_id)
+        serializer = ProductCardsSerializer(products, many=True)
+        return Response(serializer.data)

@@ -38,7 +38,23 @@ class ProductSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'logo']
+
+class ProductCardsSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField()
+
+    class Meta:
+        model = Product
+        fields = [
+            'id',
+            'product_name',
+            'code',
+            'subcode',
+            'slogan',
+            'description',
+            'face_img',
+            'category'
+        ]
 
 
 class ProductShortSerializer(serializers.ModelSerializer):
@@ -52,4 +68,4 @@ class CategoryWithProductsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'products']
+        fields = ['id', 'name', 'description','products']
