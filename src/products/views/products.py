@@ -96,7 +96,8 @@ class CategoryCardsByLanguageView(APIView):
         if not category:
             return Response({"detail": f"No category found for language '{language}'."}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = CategoryWithProductCardsSerializer(category)
+        # ✅ передаём context с request
+        serializer = CategoryWithProductCardsSerializer(category, context={'request': request})
         return Response(serializer.data)
     
 

@@ -22,7 +22,12 @@ def get_products_by_category(category_id: int):
 
 
 def get_category_with_products_by_language(language: str):
-    return Category.objects.prefetch_related('products').filter(language=language).first()
+    return Category.objects.prefetch_related(
+        Prefetch(
+            'products',
+            queryset=Product.objects.filter(language=language)
+        )
+    ).filter(products__language=language).first()
 
 
 def get_banner_by_category_id(category_id: int):
