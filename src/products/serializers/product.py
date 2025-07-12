@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from products.models.product import Product, Category, Feature, Use
+from products.models.product import Product, Category, Feature, Use, Banner
 
 
 class FeatureSerializer(serializers.ModelSerializer):
@@ -69,3 +69,20 @@ class CategoryWithProductsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'description','products']
+
+
+class CategoryWithProductCardsSerializer(serializers.ModelSerializer):
+    products = ProductCardsSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'description', 'products']
+
+
+
+class BannerSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField()
+
+    class Meta:
+        model = Banner
+        fields = ['id', 'category', 'slogan', 'description', 'background_image', 'photo']

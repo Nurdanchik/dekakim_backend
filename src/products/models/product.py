@@ -112,3 +112,27 @@ class Feature(BaseModel):
     class Meta:
         verbose_name = 'Feature'
         verbose_name_plural = 'Features'
+
+
+
+class Banner(BaseModel):
+    """
+    Banner for a category
+    """
+    category = models.OneToOneField(
+        Category,
+        on_delete=models.CASCADE,
+        related_name='banner',
+        verbose_name='Category'
+    )
+    slogan = models.CharField(max_length=255, verbose_name='Slogan')
+    description = models.TextField(verbose_name='Description')
+    background_image = models.ImageField(upload_to='banners/backgrounds/', verbose_name='Background image')
+    photo = models.ImageField(upload_to='banners/photos/', verbose_name='Photo')
+
+    def __str__(self):
+        return f"Banner for {self.category.name}"
+
+    class Meta:
+        verbose_name = 'Banner'
+        verbose_name_plural = 'Banners'
