@@ -2,6 +2,12 @@ from rest_framework import serializers
 from products.models.product import Product, Category, Feature, Use, Banner
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'logo', 'name', 'description']
+
+
 class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feature
@@ -17,7 +23,7 @@ class UseSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     features = FeatureSerializer(many=True, read_only=True)
     uses = UseSerializer(many=True, read_only=True)
-    category = serializers.StringRelatedField()
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Product
@@ -35,13 +41,8 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ['id', 'name', 'logo']
-
 class ProductCardsSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField()
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Product
@@ -68,7 +69,7 @@ class CategoryWithProductsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'description','products']
+        fields = ['id', 'name', 'description', 'products']
 
 
 class CategoryWithProductCardsSerializer(serializers.ModelSerializer):
@@ -79,9 +80,8 @@ class CategoryWithProductCardsSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'products']
 
 
-
 class BannerSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField()
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Banner
