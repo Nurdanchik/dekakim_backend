@@ -1,5 +1,5 @@
 from django.contrib import admin
-from products.models.product import Category, Product, Use, Feature
+from products.models.product import Category, Product, Use, Feature, B
 
 
 class UseInline(admin.TabularInline):

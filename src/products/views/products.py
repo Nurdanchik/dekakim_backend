@@ -6,15 +6,13 @@ from rest_framework import status
 from products.serializers.product import (
     CategoryWithProductsSerializer,
     ProductSerializer,
-    ProductCardsSerializer,
-    CategoryWithProductCardsSerializer,
     BannerSerializer,
+    CategoryWithFlatProductCardsSerializer,
 )
 from products.services.products import (
     get_all_categories_with_products,
     get_product_by_id,
     get_products_by_category,
-    get_category_with_products_by_language,
     get_banner_by_category_id,
 )
 from products.models.product import Product
@@ -62,44 +60,27 @@ class ProductDetailAPIView(RetrieveAPIView):
 
     def get_object(self):
         return get_product_by_id(self.kwargs['pk'])
-    
 
-
-class ProductCardsByCategoryView(APIView):
-    def get(self, request, category_id):
-        products = get_products_by_category(category_id)
-        serializer = ProductCardsSerializer(products, many=True)
-        return Response(serializer.data)
-    
 
 @extend_schema(
     parameters=[
         OpenApiParameter(
             name='language',
-            description='Product language: Eng (English), Tur (Turkish)',
+            description='Filter products by language',
             required=False,
-            type=str,
-            examples=[
-                OpenApiExample(name='English', value='Eng'),
-                OpenApiExample(name='Turkish', value='Tur'),
-            ]
-        ),
+            type=str
+        )
     ],
-    summary='Detailed cards for one category',
-    description='Returns one category with detailed product cards. The category is chosen based on language.'
+    summary='List categories with flat product cards',
+    description='Returns categories with products, where product includes category fields as flat.'
 )
-class CategoryCardsByLanguageView(APIView):
+class CategoryWithFlatProductCardsView(APIView):
     def get(self, request):
-        language = request.query_params.get('language', 'Eng')
-        category = get_category_with_products_by_language(language)
-
-        if not category:
-            return Response({"detail": f"No category found for language '{language}'."}, status=status.HTTP_404_NOT_FOUND)
-
-        # ✅ передаём context с request
-        serializer = CategoryWithProductCardsSerializer(category, context={'request': request})
+        language = request.query_params.get('language')
+        categories = get_all_categories_with_products(language=language)
+        serializer = CategoryWithFlatProductCardsSerializer(categories, many=True, context={'request': request})
         return Response(serializer.data)
-    
+
 
 @extend_schema(
     parameters=[

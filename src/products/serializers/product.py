@@ -41,8 +41,11 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
 
 
-class ProductCardsSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
+class ProductCardsFlatSerializer(serializers.ModelSerializer):
+    category_id = serializers.IntegerField(source='category.id', read_only=True)
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    category_logo = serializers.ImageField(source='category.logo', read_only=True)
+    category_description = serializers.CharField(source='category.description', read_only=True)
 
     class Meta:
         model = Product
@@ -54,8 +57,19 @@ class ProductCardsSerializer(serializers.ModelSerializer):
             'slogan',
             'description',
             'face_img',
-            'category'
+            'category_id',
+            'category_name',
+            'category_logo',
+            'category_description',
         ]
+
+
+class CategoryWithFlatProductCardsSerializer(serializers.ModelSerializer):
+    products = ProductCardsFlatSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'description', 'products']
 
 
 class ProductShortSerializer(serializers.ModelSerializer):
@@ -66,14 +80,6 @@ class ProductShortSerializer(serializers.ModelSerializer):
 
 class CategoryWithProductsSerializer(serializers.ModelSerializer):
     products = ProductShortSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Category
-        fields = ['id', 'name', 'description', 'products']
-
-
-class CategoryWithProductCardsSerializer(serializers.ModelSerializer):
-    products = ProductCardsSerializer(many=True, read_only=True)
 
     class Meta:
         model = Category
