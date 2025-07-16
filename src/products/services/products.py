@@ -21,5 +21,8 @@ def get_products_by_category(category_id: int):
     return Product.objects.filter(category_id=category_id)
 
 
-def get_banner_by_category_id(category_id: int):
-    return Banner.objects.select_related('category').filter(category__id=category_id).first()
+def get_banner_by_category_id_and_language(category_id: int, language: str = 'Eng'):
+    return Banner.objects.select_related('category').filter(
+        category__id=category_id,
+        language=language
+    ).first()

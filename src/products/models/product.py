@@ -119,6 +119,18 @@ class Banner(BaseModel):
     """
     Banner for a category
     """
+
+    LANGUAGES = (
+        ('Eng', 'English'),
+        ('Tur', 'Turkish'),
+    )
+
+    language = models.CharField(
+        max_length=10,
+        choices=LANGUAGES,
+        default='Eng',
+        verbose_name='Language'
+    )
     category = models.OneToOneField(
         Category,
         on_delete=models.CASCADE,
@@ -127,7 +139,6 @@ class Banner(BaseModel):
     )
     slogan = models.CharField(max_length=255, verbose_name='Slogan')
     description = models.TextField(verbose_name='Description')
-    background_image = models.ImageField(upload_to='banners/backgrounds/', verbose_name='Background image')
     photo = models.ImageField(upload_to='banners/photos/', verbose_name='Photo')
 
     def __str__(self):

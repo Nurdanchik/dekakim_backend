@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiTypes
 from rest_framework import status
 from products.serializers.product import (
     CategoryWithProductsSerializer,
@@ -12,8 +12,7 @@ from products.serializers.product import (
 from products.services.products import (
     get_all_categories_with_products,
     get_product_by_id,
-    get_products_by_category,
-    get_banner_by_category_id,
+    get_banner_by_category_id_and_language,
 )
 from products.models.product import Product
 
@@ -86,23 +85,31 @@ class CategoryWithFlatProductCardsView(APIView):
     parameters=[
         OpenApiParameter(
             name='category_id',
-            description='ID of the category to get banner for',
+            description='ID категории',
             required=True,
-            type=int
+            type=OpenApiTypes.INT
+        ),
+        OpenApiParameter(
+            name='language',
+            description='Язык баннера (Eng, Tur)',
+            required=False,
+            type=OpenApiTypes.STR
         )
     ],
-    summary='Get banner for category',
-    description='Returns banner data for a given category.'
+    summary='Получить баннер категории',
+    description='Возвращает баннер по category_id и опционально language'
 )
 class BannerByCategoryView(APIView):
     def get(self, request):
         category_id = request.query_params.get('category_id')
+        language = request.query_params.get('language', 'Eng')
+
         if not category_id:
             return Response({'detail': 'category_id is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        banner = get_banner_by_category_id(category_id)
+        banner = get_banner_by_category_id_and_language(category_id, language)
         if not banner:
-            return Response({'detail': 'No banner found for this category.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'No banner found for this category and language.'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = BannerSerializer(banner)
+        serializer = BannerSerializer(banner, context={'request': request})
         return Response(serializer.data)
